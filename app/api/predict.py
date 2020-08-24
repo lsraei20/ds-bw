@@ -18,9 +18,12 @@ class Success(BaseModel):
     deadline: str = Field(..., example='10/20/2020')
     category: str = Field(..., example='sports')
 
-    def to_df(self):
-        """Convert pydantic object to pandas dataframe with 1 row."""
-        return pd.DataFrame([dict(self)])
+    def prep_data(self):
+        df = pd.DataFrame([dict(self)])
+        df['launch_date'] = pd.to_datetime(df['launch_date'], format='%m/%d/%Y')
+        df['deadline'] = pd.to_datetime(df['deadline'], format='%m/%d/%Y')
+        df['goal'] = pd.to_numeric(df['goal'])
+        return df
 
 
 @router.post('/predict')
@@ -37,7 +40,7 @@ async def predict(success: Success):
      - 'category': 'string (category of campaign)'
 
     ### Response
-    - `campaign id`: unique campaign identifier
+    - `campaign_id`: unique campaign identifier
     - `prediction`: boolean, pass or fail,
     representing the predicted class's probability
 
@@ -46,7 +49,7 @@ async def predict(success: Success):
     campaign_id = 23548
     result = 'pass'
     return {
-        'campaign id': campaign_id,
+        'campaign_id': campaign_id,
         'prediction': result
     }
 
