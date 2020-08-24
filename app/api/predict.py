@@ -29,12 +29,12 @@ async def predict(success: Success):
     Make a prediction of kickstarter success or fail
 
     ### Request Body
-     - 'title': 'Water bike',
-     - 'blurb': 'A bike that floats',
-     - 'goal': '5000',
-     - 'launch_date': '08/06/2020',
-     - 'deadline': '10/20/2020',
-     - 'category': 'sports'
+     - 'title': 'string (title of campaign)',
+     - 'blurb': 'string (Description of campaign)',
+     - 'goal': 'int (monetary goal)',
+     - 'launch_date': 'string (date in dd/mm/yyyy format)',
+     - 'deadline': 'string (date in dd/mm/yyyy format)',
+     - 'category': 'string (category of campaign)'
 
     ### Response
     - `campaign id`: unique campaign identifier
