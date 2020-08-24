@@ -11,12 +11,12 @@ router = APIRouter()
 
 class Success(BaseModel):
     """Use this data model to parse the request body JSON."""
-    title: str = Field(..., example='banjo')
-    blurb: str = Field(..., example='banjo')
-    goal: int = Field(..., example=-42)
-    launch_date: str = Field(..., example='banjo')
-    deadline: str = Field(..., example='banjo')
-    category: str = Field(..., example='banjo')
+    title: str = Field(..., example='Water bike')
+    blurb: str = Field(..., example='A bike that floats')
+    goal: int = Field(..., example=5000)
+    launch_date: str = Field(..., example='08/06/2020')
+    deadline: str = Field(..., example='10/20/2020')
+    category: str = Field(..., example='sports')
 
     def to_df(self):
         """Convert pydantic object to pandas dataframe with 1 row."""
