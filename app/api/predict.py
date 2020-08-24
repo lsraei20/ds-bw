@@ -26,19 +26,21 @@ class Success(BaseModel):
 @router.post('/predict')
 async def predict(success: Success):
     """
-    Make random baseline predictions for classification problem 🔮
+    Make a prediction of kickstarter success or fail
 
     ### Request Body
-    - `x1`: positive float
-    - `x2`: integer
-    - `x3`: string
+     - 'title': 'Water bike',
+     - 'blurb': 'A bike that floats',
+     - 'goal': '5000',
+     - 'launch_date': '08/06/2020',
+     - 'deadline': '10/20/2020',
+     - 'category': 'sports'
 
     ### Response
-    - `prediction`: boolean, at random
-    - `predict_proba`: float between 0.5 and 1.0, 
+    - `campaign id`: unique campaign identifier
+    - `prediction`: boolean, pass or fail,
     representing the predicted class's probability
 
-    Replace the placeholder docstring and fake predictions with your own model.
     """
 
     campaign_id = 23548
