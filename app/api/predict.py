@@ -12,19 +12,22 @@ router = APIRouter()
 class Success(BaseModel):
     """Use this data model to parse the request body JSON."""
     title: str = Field(..., example='Water bike')
-    blurb: str = Field(..., example='A bike that floats')
-    goal: int = Field(..., example=5000)
-    launch_date: str = Field(..., example='08/06/2020')
-    deadline: str = Field(..., example='10/20/2020')
+    description: str = Field(..., example='A bike that floats')
+    monetary_goal: int = Field(..., example=5000)
+    launch_date: str = Field(..., example='2020/08/06')
+    finish_date: str = Field(..., example='2020/10/20')
     category: str = Field(..., example='sports')
 
     def prep_data(self):
         """Prepare the data to be sent to the machine learning model"""
         df = pd.DataFrame([dict(self)])
-        df['launch_date'] = pd.to_datetime(df['launch_date'], format='%m/%d/%Y')
-        df['deadline'] = pd.to_datetime(df['deadline'], format='%m/%d/%Y')
-        df['goal'] = pd.to_numeric(df['goal'])
-        return df
+        df['title_desc'] = df['title'] + " " + df['description']
+        df2 = df['title_desc']
+        print(df2)
+        df['launch_date'] = pd.to_datetime(df['launch_date'], format='%Y/%m/%d')
+        df['finish_date'] = pd.to_datetime(df['finish_date'], format='%Y/%m/%d')
+        df['monetary_goal'] = pd.to_numeric(df['monetary_goal'])
+        return df2
 
 
 @router.post('/predict')
@@ -34,10 +37,10 @@ async def predict(success: Success):
 
     ### Request Body
      - 'title': 'string (title of campaign)',
-     - 'blurb': 'string (Description of campaign)',
-     - 'goal': 'int (monetary goal)',
-     - 'launch_date': 'string (date in dd/mm/yyyy format)',
-     - 'deadline': 'string (date in dd/mm/yyyy format)',
+     - 'description': 'string (Description of campaign)',
+     - 'monetary_goal': 'int (monetary goal)',
+     - 'launch_date': 'string (date in yyyy/mm/dd format)',
+     - 'finish_date': 'string (date in yyyy/mm/dd format)',
      - 'category': 'string (category of campaign)'
 
     ### Response
@@ -48,7 +51,7 @@ async def predict(success: Success):
     """
 
     campaign_id = 23548
-    result = 'Success'
+    result = 'pass'
     return {
         'campaign_id': campaign_id,
         'prediction': result
