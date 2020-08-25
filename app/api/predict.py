@@ -19,6 +19,7 @@ class Success(BaseModel):
     category: str = Field(..., example='sports')
 
     def prep_data(self):
+        """Prepare the data to be sent to the machine learning model"""
         df = pd.DataFrame([dict(self)])
         df['launch_date'] = pd.to_datetime(df['launch_date'], format='%m/%d/%Y')
         df['deadline'] = pd.to_datetime(df['deadline'], format='%m/%d/%Y')
@@ -47,9 +48,8 @@ async def predict(success: Success):
     """
 
     campaign_id = 23548
-    result = 'pass'
+    result = 'Success'
     return {
         'campaign_id': campaign_id,
         'prediction': result
     }
-
