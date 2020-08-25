@@ -49,6 +49,7 @@ async def predict(success: Success):
     representing the predicted class's probability
 
     """
+    df = success.prep_data()
 
     campaign_id = 23548
     result = 'pass'
