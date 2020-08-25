@@ -16,10 +16,6 @@ fastapi = "*"
 pandas = "*"
 uvicorn = "*"
 plotly = "*"
-xgboost = "*"
-nltk = "*"
-spacy = "*"
-sklearn = "*"
 
 [requires]
 python_version = "3.7"
