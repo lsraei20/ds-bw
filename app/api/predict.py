@@ -53,7 +53,7 @@ async def predict(success: Success):
     model = joblib.load('app/api/lrm_model.pkl')
     # Feeding user data to the model and returning it to the user
     df = success.prep_data()
-    prediction = str((model.predict([df]))[0])
+    prediction = int((model.predict([df]))[0])
     return {
         'prediction': prediction,
         'probability_of_success': 75,
