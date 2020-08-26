@@ -50,7 +50,7 @@ async def predict(success: Success):
     representing the predicted class's probability
     """
     # Unpickling machine learning model
-    model = joblib.load('lrm_model.pkl')
+    model = joblib.load('/Users/israel/PycharmProjects/kickstarter-success-rate/app/api/lrm_model.pkl')
     # Feeding user data to the model and returning it to the user
     df = success.prep_data()
     prediction = str((model.predict([df]))[0])
