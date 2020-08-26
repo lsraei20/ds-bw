@@ -1,7 +1,7 @@
 import logging
 import pandas as pd
 from fastapi import APIRouter
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 import joblib
 
 # Connecting to fast API
@@ -28,6 +28,41 @@ class Success(BaseModel):
         df['finish_date'] = pd.to_datetime(df['finish_date'], format='%Y/%m/%d')
         df['monetary_goal'] = pd.to_numeric(df['monetary_goal'])
         return df2
+
+    @validator('title')
+    def title_must_be_str(cls, value):
+        assert value.isdigit(
+        ) == False, f'{value} == title, title value must be a string'
+        return value
+
+    @validator('description')
+    def blurb_must_be_str(cls, value):
+        assert value.isdigit(
+        ) == False, f'blurb == {value}, blurb value must be a string'
+        return value
+
+    @validator('monetary_goal')
+    def goal_must_be_positive(cls, value):
+        assert value > 0, f'goal == {value}, goal value must be > 0'
+        return value
+
+    @validator('launch_date')
+    def launch_date_must_be_str(cls, value):
+        assert value.isdigit(
+        ) == False, f'launch_date == {value}, launch_date value must be a string'
+        return value
+
+    @validator('finish_date')
+    def deadline_must_be_str(cls, value):
+        assert value.isdigit(
+        ) == False, f'deadline == {value}, deadline value must be a string'
+        return value
+
+    @validator('category')
+    def category_must_be_str(cls, value):
+        assert value.isdigit(
+        ) == False, f'{value} == title, title value must be a string'
+        return value
 
 
 # Returns a prediction to anyone making a request to the API
