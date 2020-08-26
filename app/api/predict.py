@@ -58,5 +58,15 @@ async def predict(success: Success):
     result = 'pass'
     return {
         'campaign_id': campaign_id,
-        'prediction': prediction
+        'prediction': prediction,
+
     }
+{
+    'prediction': 0,
+    'probability_of_success': 75,
+    'monetary_feedback': 'too long',
+    'Title_feedback': 'too short',
+    'description_feedback': 'too long',
+    'campaign_time_feedback': 'to long',
+    'month_feedback': 'wait a month'
+}
