@@ -54,10 +54,6 @@ async def predict(success: Success):
     # Feeding user data to the model and returning it to the user
     df = success.prep_data()
     prediction = str((model.predict([df]))[0])
-    campaign_id = 23548
-    result = 'pass'
     return {
-        'campaign_id': campaign_id,
         'prediction': prediction,
-
     }
