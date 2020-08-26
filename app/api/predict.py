@@ -56,4 +56,10 @@ async def predict(success: Success):
     prediction = str((model.predict([df]))[0])
     return {
         'prediction': prediction,
+        'probability_of_success': 75,
+        'monetary_feedback': 'too long',
+        'Title_feedback': 'too short',
+        'description_feedback': 'too long',
+        'campaign_time_feedback': 'to long',
+        'month_feedback': 'wait a month'
     }
