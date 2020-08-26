@@ -1,14 +1,15 @@
 import logging
-import random
-
-from fastapi import APIRouter
 import pandas as pd
-from pydantic import BaseModel, Field, validator
+from fastapi import APIRouter
+from pydantic import BaseModel, Field
+import joblib
 
+# Connecting to fast API
 log = logging.getLogger(__name__)
 router = APIRouter()
 
 
+# Retrieves and stores data from the API
 class Success(BaseModel):
     """Use this data model to parse the request body JSON."""
     title: str = Field(..., example='Water bike')
@@ -19,17 +20,17 @@ class Success(BaseModel):
     category: str = Field(..., example='sports')
 
     def prep_data(self):
-        """Prepare the data to be sent to the machine learning model"""
+        """Prepares the data to be sent to the machine learning model as a dataframe row"""
         df = pd.DataFrame([dict(self)])
         df['title_desc'] = df['title'] + " " + df['description']
-        df2 = df['title_desc']
-        print(df2)
+        df2 = df['title_desc'][0]
         df['launch_date'] = pd.to_datetime(df['launch_date'], format='%Y/%m/%d')
         df['finish_date'] = pd.to_datetime(df['finish_date'], format='%Y/%m/%d')
         df['monetary_goal'] = pd.to_numeric(df['monetary_goal'])
         return df2
 
 
+# Returns a prediction to anyone making a request to the API
 @router.post('/predict')
 async def predict(success: Success):
     """
@@ -47,14 +48,17 @@ async def predict(success: Success):
     - `campaign_id`: unique campaign identifier
     - `prediction`: boolean, pass or fail,
     representing the predicted class's probability
-
     """
+    # Unpickling machine learning model
+    model = joblib.load('/Users/israel/PycharmProjects/'
+                        'kickstarter-success-rate/app/'
+                        'api/lrm_model.pkl')
+    # Feeding user data to the model and returning it to the user
     df = success.prep_data()
-
+    prediction = str((model.predict([df]))[0])
     campaign_id = 23548
     result = 'pass'
     return {
         'campaign_id': campaign_id,
-        'prediction': result
+        'prediction': prediction
     }
-
