@@ -80,9 +80,20 @@ async def predict(success: Success):
      - 'category': 'string (category of campaign)'
 
     ### Response
-    - `campaign_id`: unique campaign identifier
-    - `prediction`: boolean, pass or fail,
+    -  'prediction': boolean, pass or fail,
     representing the predicted class's probability
+    -  'probability_of_success': int, percentage
+    probability of having a successful campaign
+    -  'monetary_feedback': string, feedback
+    about monetary goal of the campaign
+    -  'Title_feedback': string, feedback about
+    the length of your campaign's title
+    -  'description_feedback': string, feedback about
+    the length of your campaign's description
+    -  'campaign_time_feedback': string, feedback about
+    the duration of your campaign
+    -  'month_feedback': string, feedback about when it's
+    the best time to launch your campaign
     """
     # Unpickling machine learning model
     model = joblib.load('app/api/lrm_model.pkl')
