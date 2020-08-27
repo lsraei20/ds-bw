@@ -3,6 +3,7 @@ import pandas as pd
 from fastapi import APIRouter
 from pydantic import BaseModel, Field, validator
 import joblib
+from app.api.return_feedback import feedback
 
 # Connecting to fast API
 log = logging.getLogger(__name__)
@@ -23,11 +24,10 @@ class Success(BaseModel):
         """Prepares the data to be sent to the machine learning model as a dataframe row"""
         df = pd.DataFrame([dict(self)])
         df['title_desc'] = df['title'] + " " + df['description']
-        df2 = df['title_desc'][0]
         df['launch_date'] = pd.to_datetime(df['launch_date'], format='%Y/%m/%d')
         df['finish_date'] = pd.to_datetime(df['finish_date'], format='%Y/%m/%d')
         df['monetary_goal'] = pd.to_numeric(df['monetary_goal'])
-        return df2
+        return df
 
     @validator('title')
     def title_must_be_str(cls, value):
@@ -86,15 +86,20 @@ async def predict(success: Success):
     """
     # Unpickling machine learning model
     model = joblib.load('app/api/lrm_model.pkl')
-    # Feeding user data to the model and returning it to the user
+
+    # Feeding user data to the model
     df = success.prep_data()
-    prediction = int((model.predict([df]))[0])
+    df2 = df['title_desc'][0]
+    prediction = int((model.predict([df2]))[0])
+
+    # Returning feedback to the user
+    monetary_feedback, title_feedback, description_feedback, campaign_len_feedback, month_launched = feedback(df)
     return {
         'prediction': prediction,
         'probability_of_success': 75,
-        'monetary_feedback': 'too long',
-        'Title_feedback': 'too short',
-        'description_feedback': 'too long',
-        'campaign_time_feedback': 'to long',
-        'month_feedback': 'wait a month'
+        'monetary_feedback': monetary_feedback,
+        'Title_feedback': title_feedback,
+        'description_feedback': description_feedback,
+        'campaign_time_feedback': campaign_len_feedback,
+        'month_feedback': month_launched
     }
