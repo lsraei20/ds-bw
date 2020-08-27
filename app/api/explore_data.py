@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv('/Users/israel/Desktop/kickstarter_data_with_features.csv')
+df = pd.read_csv('app/api/data/kickstarter_data_with_features.csv')
 
 # These are the only columns we can use as input
 df = df[['name', 'goal', 'blurb', 'launched_at', 'deadline', 'category', 'state', 'country']]
@@ -83,3 +83,5 @@ successful_dict = separate(sucdf)
 total_dict = separate(df)
 month_probability_dic = ({k: successful_dict[k] / total_dict[k] for k in total_dict.keys() & successful_dict})
 print(month_probability_dic)
+
+
